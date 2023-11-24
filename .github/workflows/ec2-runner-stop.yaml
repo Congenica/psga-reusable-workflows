@@ -3,6 +3,10 @@ name: runner stop
 on:
   workflow_call:
 
+env:
+  AWS_REGION: eu-west-2
+  EC2_INSTANCE_TYPE: c5.xlarge
+
 jobs:
   stop-runner:
     # needs:
