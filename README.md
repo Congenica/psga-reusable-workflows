@@ -1,2 +1,3 @@
-# psga-shared-workflows
-PSGA shared and reusable GitHub Action workflows
+# PSGA Reusable Workflows
+
+PSGA shared and reusable GitHub Action workflows.
