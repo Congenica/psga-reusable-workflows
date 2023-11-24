@@ -1,0 +1,47 @@
+name: runner start
+
+on:
+  workflow_call:
+
+jobs:
+  start-runner:
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.start-ec2-runner.outputs.label }}
+      ec2-instance-id: ${{ steps.start-ec2-runner.outputs.ec2-instance-id }}
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
+          role-session-name: cicd-role-session
+          mask-aws-account-id: false
+      
+      - name: Get latest runner AMI ID
+        run: |
+          GH_RUNNER_AMI_ID=$(aws ec2 describe-images \
+            --owners self \
+            --filters "Name=name,Values=psga*" \
+            --query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
+            --output 'text' | cat)
+          echo "GH_RUNNER_AMI_ID=${GH_RUNNER_AMI_ID}" >> $GITHUB_ENV
+          echo "Show latest AMI ID"
+          echo $GH_RUNNER_AMI_ID
+
+      - name: Start EC2 runner
+        id: start-ec2-runner
+        uses: machulav/ec2-github-runner@v2
+        with:
+          mode: start
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ec2-image-id: ${{ env.GH_RUNNER_AMI_ID }}
+          ec2-instance-type: ${{ env.EC2_INSTANCE_TYPE }}
+          subnet-id: ${{ vars.GH_RUNNER_SUBNET_ID }}
+          security-group-id: ${{ vars.GH_RUNNER_SECURITY_GROUP_ID }}
+          iam-role-name: ${{ vars.GH_RUNNER_IAM_ROLE_NAME }}
+          aws-resource-tags: > 
+            [
+              {"Key": "Name", "Value": "${{ inputs.env_type }}-gh-ephemeral-runner"},
+              {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
+            ]
