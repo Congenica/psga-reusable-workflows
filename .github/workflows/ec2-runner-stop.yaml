@@ -1,0 +1,27 @@
+name: runner stop
+
+on:
+  workflow_call:
+
+jobs:
+  stop-runner:
+    # needs:
+    #   - start-runner # required to get output from the start-runner job
+    #   - environment # required to wait when the main job is done
+    runs-on: ubuntu-latest
+    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
+          role-session-name: cicd-role-session
+          mask-aws-account-id: false
+      - name: Stop EC2 runner
+        uses: machulav/ec2-github-runner@v2
+        with:
+          mode: stop
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          label: ${{ needs.start-runner.outputs.label }}
+          ec2-instance-id: ${{ needs.start-runner.outputs.ec2-instance-id }}
