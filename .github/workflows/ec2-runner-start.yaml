@@ -3,6 +3,10 @@ name: runner start
 on:
   workflow_call:
 
+env:
+  AWS_REGION: eu-west-2
+  EC2_INSTANCE_TYPE: c5.xlarge
+
 jobs:
   start-runner:
     runs-on: ubuntu-latest
