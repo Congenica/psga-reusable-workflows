@@ -12,6 +12,11 @@ on:
       ec2-instance-type:
         required: true
         type: string
+    outputs:
+      label: 
+        value: ${{ jobs.start-runner.outputs.label }}
+      ec2-instance-id: 
+        value: ${{ jobs.start-runner.outputs.ec2-instance-id }}
 
 jobs:
   start-runner:
@@ -55,3 +60,8 @@ jobs:
               {"Key": "Name", "Value": "${{ inputs.env_type }}-gh-ephemeral-runner"},
               {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
             ]
+      
+      # - name: Export label and instance ID
+      #   run: |
+      #     echo "label=${{ steps.start-ec2-runner.outputs.label }}" >> $GITHUB_OUTPUT
+      #     echo "ec2-instance-id=${{ steps.start-ec2-runner.outputs.ec2-instance-id }}" >> $GITHUB_OUTPUT
