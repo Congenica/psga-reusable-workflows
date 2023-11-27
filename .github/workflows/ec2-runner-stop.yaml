@@ -3,13 +3,7 @@ name: runner stop
 on:
   workflow_call:
     inputs:
-      env_type:
-        required: true
-        type: string
       aws-region:
-        required: true
-        type: string
-      ec2-instance-type:
         required: true
         type: string
 
