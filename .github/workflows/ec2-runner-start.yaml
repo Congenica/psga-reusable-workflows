@@ -61,7 +61,7 @@ jobs:
               {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
             ]
       
-      - name: Export label and instance ID # required for stop workflow
-        run: |
-          echo "label=${{ steps.start-ec2-runner.outputs.label }}" >> $GITHUB_OUTPUT
-          echo "ec2-instance-id=${{ steps.start-ec2-runner.outputs.ec2-instance-id }}" >> $GITHUB_OUTPUT
+      # - name: Export label and instance ID # required for stop workflow
+      #   run: |
+      #     echo "label=${{ steps.start-ec2-runner.outputs.label }}" >> $GITHUB_OUTPUT
+      #     echo "ec2-instance-id=${{ steps.start-ec2-runner.outputs.ec2-instance-id }}" >> $GITHUB_OUTPUT
