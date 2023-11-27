@@ -26,7 +26,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ inputs.AWS_REGION }}
           role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
           role-session-name: cicd-role-session
           mask-aws-account-id: false
@@ -48,8 +48,8 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          ec2-image-id: ${{ env.GH_RUNNER_AMI_ID }}
-          ec2-instance-type: ${{ env.EC2_INSTANCE_TYPE }}
+          ec2-image-id: ${{ inputs.GH_RUNNER_AMI_ID }}
+          ec2-instance-type: ${{ inputs.EC2_INSTANCE_TYPE }}
           subnet-id: ${{ vars.GH_RUNNER_SUBNET_ID }}
           security-group-id: ${{ vars.GH_RUNNER_SECURITY_GROUP_ID }}
           iam-role-name: ${{ vars.GH_RUNNER_IAM_ROLE_NAME }}
