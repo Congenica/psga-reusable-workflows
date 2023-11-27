@@ -2,10 +2,19 @@ name: runner start
 
 on:
   workflow_call:
-
-env:
-  AWS_REGION: eu-west-2
-  EC2_INSTANCE_TYPE: c5.xlarge
+    inputs:
+      env_type:
+        required: true
+        type: string
+      aws-region:
+        required: true
+        type: string
+      ec2-image-id:
+        required: true
+        type: string
+      ec2-instance-type:
+        required: true
+        type: string
 
 jobs:
   start-runner:
