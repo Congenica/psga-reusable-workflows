@@ -36,5 +36,5 @@ jobs:
         with:
           mode: stop
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          label: $LABEL
-          ec2-instance-id: $EC2-ID
+          label: ${{ env.LABEL }}
+          ec2-instance-id: ${{ env.EC2-ID }}
