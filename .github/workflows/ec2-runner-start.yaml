@@ -9,9 +9,6 @@ on:
       aws-region:
         required: true
         type: string
-      ec2-image-id:
-        required: true
-        type: string
       ec2-instance-type:
         required: true
         type: string
@@ -48,7 +45,7 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          ec2-image-id: ${{ inputs.GH_RUNNER_AMI_ID }}
+          ec2-image-id: ${{ env.GH_RUNNER_AMI_ID }}
           ec2-instance-type: ${{ inputs.EC2_INSTANCE_TYPE }}
           subnet-id: ${{ vars.GH_RUNNER_SUBNET_ID }}
           security-group-id: ${{ vars.GH_RUNNER_SECURITY_GROUP_ID }}
