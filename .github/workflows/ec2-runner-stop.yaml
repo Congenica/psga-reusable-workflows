@@ -32,10 +32,10 @@ jobs:
           role-session-name: cicd-role-session
           mask-aws-account-id: false
 
-      - name: Check Outputs and ENV
-        run: | 
-          echo $GITHUB_OUTPUT
-          echo $GITHUB_ENV
+      # - name: Check Outputs and ENV
+      #   run: | 
+      #     echo $GITHUB_OUTPUT
+      #     echo $GITHUB_ENV
 
       - name: Stop EC2 runner
         uses: machulav/ec2-github-runner@v2
