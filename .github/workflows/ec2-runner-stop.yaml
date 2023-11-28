@@ -6,19 +6,12 @@ on:
       aws-region:
         required: true
         type: string
-    # outputs:
-    #   label: 
-    #     value: ${{ jobs.start-runner.outputs.label }}
-    #   ec2-instance-id: 
-    #     value: ${{ jobs.start-runner.outputs.ec2-instance-id }}
-      # label: 
-      #   required: true
-      #   default: '${{ jobs.start-runner.outputs.label }}'
-      #   type: string
-      # ec2-instance-id: 
-      #   required: true
-      #   default:
-      #   type: string
+      label: 
+        required: true
+        type: string
+      ec2-instance-id: 
+        required: true
+        type: string
 
 jobs:
   stop-runner:
