@@ -63,8 +63,8 @@ jobs:
       
       - name: Export label and instance ID # required for stop workflow
         run: |
-          echo "LABEL=${{ steps.start-ec2-runner.outputs.label }}" >> $GITHUB_ENV
-          echo "EC2-ID=${{ steps.start-ec2-runner.outputs.ec2-instance-id }}" >> $GITHUB_ENV
+          echo "label=${{ steps.start-ec2-runner.outputs.label }}" >> $GITHUB_OUTPUT
+          echo "ec2-instance-id=${{ steps.start-ec2-runner.outputs.ec2-instance-id }}" >> $GITHUB_OUTPUT
     
       - name: Check Outputs and ENV
         run: | 
