@@ -15,13 +15,7 @@ on:
 
 jobs:
   stop-runner:
-    # needs:
-    #   - start-runner # required to get output from the start-runner job
-    #   - environment # required to wait when the main job is done
     runs-on: ubuntu-latest
-    # env:
-    #   LABEL: ${LABEL}
-    #   EC2-ID: ${EC2-ID}
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Configure AWS credentials
@@ -31,11 +25,6 @@ jobs:
           role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
           role-session-name: cicd-role-session
           mask-aws-account-id: false
-
-      # - name: Check Outputs and ENV
-      #   run: | 
-      #     echo $GITHUB_OUTPUT
-      #     echo $GITHUB_ENV
 
       - name: Stop EC2 runner
         uses: machulav/ec2-github-runner@v2
