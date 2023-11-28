@@ -21,9 +21,9 @@ jobs:
     #   - start-runner # required to get output from the start-runner job
     #   - environment # required to wait when the main job is done
     runs-on: ubuntu-latest
-    env:
-      LABEL: ${LABEL}
-      EC2-ID: ${EC2-ID}
+    # env:
+    #   LABEL: ${LABEL}
+    #   EC2-ID: ${EC2-ID}
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Configure AWS credentials
@@ -44,5 +44,5 @@ jobs:
         with:
           mode: stop
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          label: ${{ env.LABEL }}
-          ec2-instance-id: ${{ env.EC2-ID }}
+          label: ${{ needs.start-runner.outputs.label }}
+          ec2-instance-id: ${{ needs.start-runner.outputs.ec2-instance-id }}
