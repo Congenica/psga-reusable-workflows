@@ -12,6 +12,11 @@ on:
       ec2-instance-id: 
         required: true
         type: string
+    secrets:
+      role-to-assume:
+        required: true
+      github-token:
+        required: true
 
 jobs:
   stop-runner:
@@ -22,7 +27,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ inputs.aws-region }}
-          role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
+          role-to-assume: ${{ secrets.role-to-assume }}
           role-session-name: gh-ephemeral-runner-role-session
           mask-aws-account-id: false
 
@@ -30,6 +35,6 @@ jobs:
         uses: machulav/ec2-github-runner@v2
         with:
           mode: stop
-          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          github-token: ${{ secrets.github-token }}
           label: ${{ inputs.label }}
           ec2-instance-id: ${{ inputs.ec2-instance-id }}
