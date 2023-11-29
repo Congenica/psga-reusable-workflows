@@ -67,9 +67,9 @@ jobs:
           github-token: ${{ inputs.github-token }}
           ec2-image-id: ${{ env.GH_RUNNER_AMI_ID }}
           ec2-instance-type: ${{ inputs.ec2-instance-type }}
-          subnet-id: ${{ vars.GH_RUNNER_SUBNET_ID }}
-          security-group-id: ${{ vars.GH_RUNNER_SECURITY_GROUP_ID }}
-          iam-role-name: ${{ vars.GH_RUNNER_IAM_ROLE_NAME }}
+          subnet-id: ${{ inputs.subnet-id }}
+          security-group-id: ${{ inputs.security-group-id }}
+          iam-role-name: ${{ inputs.iam-role-name }}
           aws-resource-tags: > 
             [
               {"Key": "Name", "Value": "${{ inputs.env_type }}-gh-ephemeral-runner"},
