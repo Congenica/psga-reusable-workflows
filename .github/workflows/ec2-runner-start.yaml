@@ -3,13 +3,28 @@ name: runner start
 on:
   workflow_call:
     inputs:
-      env_type:
-        required: true
-        type: string
       aws-region:
         required: true
         type: string
+      role-to-assume:
+        required: true
+        type: string
+      github-token:
+        required: true
+        type: string
       ec2-instance-type:
+        required: true
+        type: string
+      subnet-id:
+        required: true
+        type: string
+      security-group-id:
+        required: true
+        type: string
+      iam-role-name: 
+        required: true
+        type: string
+      env_type:
         required: true
         type: string
     outputs:
@@ -29,8 +44,8 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ inputs.aws-region }}
-          role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
-          role-session-name: cicd-role-session
+          role-to-assume: ${{ inputs.role-to-assume }}
+          role-session-name: gh-ephemeral-runner-role-session
           mask-aws-account-id: false
       
       - name: Get latest runner AMI ID
@@ -49,7 +64,7 @@ jobs:
         uses: machulav/ec2-github-runner@v2
         with:
           mode: start
-          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          github-token: ${{ inputs.github-token }}
           ec2-image-id: ${{ env.GH_RUNNER_AMI_ID }}
           ec2-instance-type: ${{ inputs.ec2-instance-type }}
           subnet-id: ${{ vars.GH_RUNNER_SUBNET_ID }}

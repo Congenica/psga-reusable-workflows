@@ -23,7 +23,7 @@ jobs:
         with:
           aws-region: ${{ inputs.aws-region }}
           role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
-          role-session-name: cicd-role-session
+          role-session-name: gh-ephemeral-runner-role-session
           mask-aws-account-id: false
 
       - name: Stop EC2 runner
