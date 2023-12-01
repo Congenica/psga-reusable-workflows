@@ -32,7 +32,7 @@ Refer to the below table for the required inputs and secrets on the caller workf
 | Name | Type | Overview |
 |------|------|----------|
 | `role-to-assume` | secrets | OpenID Connect (OIDC) role (psga-`$env_type`-gh-actions-admin) `arn` created in `psga-terraform` project. |
-| `github-token` | secrets |  Personal Access Token (PAT) from GitHub user `devopscongenica` with `admin` role permission. |
+| `github-token` | secrets |  Personal Access Token (PAT) from GitHub user `devopscongenica` added to the repository access section under settings with `admin` role permission. |
 | `aws-region` | vars | The AWS region where the instance is going to be provisioned, currently `eu-west-2`. |
 | `ec2-instance-type` | vars | The EC2 instance type to be used, currently `c5.xlarge`. |
 | `subnet-id`| vars | The VPC subnet ID where the instance is going to be deployed to, depends on the available availability zones (az) configured on the VPC. |
