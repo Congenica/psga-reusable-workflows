@@ -8,8 +8,8 @@ PSGA shared and reusable GitHub Action workflows.
 
 The following workflows ar intended to start an EC2 instance where the main workflow job can run and then terminate the same instance when finished.
 
-- [ec2-runner-start.yaml](https://github.com/Congenica/psga-reusable-workflows/blob/main/.github/workflows/ec2-runner-start.yaml)
-- [ec2-runner-stop.yaml](https://github.com/Congenica/psga-reusable-workflows/blob/main/.github/workflows/ec2-runner-stop.yaml)
+- [ec2-runner-start.yaml](.github/workflows/ec2-runner-start.yaml)
+- [ec2-runner-stop.yaml](.github/workflows/ec2-runner-stop.yaml)
 
 ### Requirements
 
