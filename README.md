@@ -6,7 +6,7 @@ PSGA shared and reusable GitHub Action workflows.
 
 ## EC2 Ephemeral Runners
 
-The following workflows ar intended to start an EC2 instance where the main workflow job can run and then terminate the same instance when finished.
+The following workflows are intended to start an EC2 instance where the main workflow job can run and then terminate the same instance when finished.
 
 - [ec2-runner-start.yaml](.github/workflows/ec2-runner-start.yaml)
 - [ec2-runner-stop.yaml](.github/workflows/ec2-runner-stop.yaml)
@@ -66,7 +66,7 @@ start-runner:
 stop-runner:
     needs:
       - start-runner # required to get output from the start-runner job
-      - name_of_main_job # required to wait when the main job is done
+      - name_of_main_jobs # required to wait when the main job/jobs is/are done.
     uses: Congenica/psga-reusable-workflows/.github/workflows/ec2-runner-stop.yaml@main
     secrets:
       role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
