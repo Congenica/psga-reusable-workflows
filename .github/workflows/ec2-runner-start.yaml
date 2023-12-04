@@ -72,6 +72,6 @@ jobs:
           aws-resource-tags: > 
             [
               {"Key": "Name", "Value": "${{ inputs.env_type }}-gh-ephemeral-runner"},
-              {"Key": "Project", "Value": "${{ github.repository }}"}
+              {"Key": "Project", "Value": "${{ github.repository }}"},
               {"Key": "EnvironmentType", "Value": "${{ inputs.env_type }}"}
             ]
