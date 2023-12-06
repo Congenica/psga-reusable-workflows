@@ -21,7 +21,6 @@ on:
 jobs:
   stop-runner:
     runs-on: ubuntu-latest
-    if: ${{ always() }} # required to stop the runner even if previous jobs failed or are cancelled
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

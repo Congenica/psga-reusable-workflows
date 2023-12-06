@@ -64,6 +64,7 @@ start-runner:
 
 ```yaml
 stop-runner:
+    if: ${{ always() }} # required to stop the runner even if previous jobs failed or are cancelled
     needs:
       - start-runner # required to get output from the start-runner job
       - name_of_main_jobs # required to wait when the main job/jobs is/are done.
