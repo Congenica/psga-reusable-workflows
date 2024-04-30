@@ -95,6 +95,7 @@ The runners will need access to DVC buckets and the static data bucket. Normally
 
 ### Calling Reference Data Sync Workflow
 
+```yaml
 name: Sync to non-prod S3
 on:
   push:
@@ -114,3 +115,6 @@ jobs:
     with:
       destination-bucket: "psga-nonprod-static-data"
       env_type: nonprod
+```
+
+---
