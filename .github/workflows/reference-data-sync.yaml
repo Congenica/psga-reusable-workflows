@@ -1,0 +1,91 @@
+name: Sync Reference Data to S3
+on:
+  workflow_call:
+    inputs:
+      destination-bucket:
+        required: true
+        type: string
+      root-folder:
+        required: false
+        default: /reference
+        type: string
+      pypi-index:
+        required: false
+        default: congenica.jfrog.io/artifactory/api/pypi/dev-pypi/simple/
+        type: string
+      env_type:
+        required: true
+        type: string
+    secrets:
+      CICD_OIDC_ROLE:
+        description: "AWS Role to use to access S3 bucket"
+        required: true
+      PYPI_USERNAME:
+        description: "Username for installing downloader package from PyPI"
+        required: true
+      PYPI_PASSWORD:
+        description: "Password for installing downloader package from PyPI"
+        required: true
+      GH_PSGA_SYSTEM_PAT:
+        description: "GitHub runner token"
+        required: true
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read
+
+jobs:
+  start-runner:
+    uses: Congenica/psga-reusable-workflows/.github/workflows/ec2-runner-start.yaml@main
+    secrets:
+      role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
+      github-token: ${{ secrets.GH_PSGA_SYSTEM_PAT }}
+    with:
+      aws-region: ${{ vars.AWS_REGION }}
+      ec2-instance-type: ${{ vars.AWS_INSTANCE_TYPE }}
+      subnet-id: ${{ vars.GH_RUNNER_SUBNET_ID }}
+      security-group-id: ${{ vars.GH_RUNNER_SECURITY_GROUP_ID }}
+      iam-role-name: ${{ vars.GH_RUNNER_IAM_ROLE_NAME }}
+      env_type: ${{ inputs.env_type }}
+
+  build:
+    name: Sync to S3
+    needs: start-runner
+    runs-on: ${{ needs.start-runner.outputs.label }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Configure AWS Credentials for dev
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+          role-duration-seconds: 7200
+
+      - name: Install dependencies and run sync
+        run: |
+          pip install psga-reference-downloader -i https://${{ secrets.PYPI_USERNAME }}:${{ secrets.PYPI_PASSWORD }}@${{ inputs.pypi-index }}
+          psga-reference-downloader --root-folder ${{ inputs.root-folder }}
+        env:
+          DESTINATION_BUCKET: ${{ inputs.destination-bucket }}
+
+  stop-runner:
+    if: ${{ always() }} # required to stop the runner even if previous jobs failed or are cancelled
+    needs:
+      - start-runner # required to get output from the start-runner job
+      - build # required to wait when the main job is done
+    uses: Congenica/psga-reusable-workflows/.github/workflows/ec2-runner-stop.yaml@main
+    secrets:
+      role-to-assume: ${{ secrets.CICD_OIDC_ROLE }}
+      github-token: ${{ secrets.GH_PSGA_SYSTEM_PAT }}
+    with:
+      aws-region: ${{ vars.AWS_REGION }}
+      label: ${{ needs.start-runner.outputs.label }}
+      ec2-instance-id: ${{ needs.start-runner.outputs.ec2-instance-id }}
