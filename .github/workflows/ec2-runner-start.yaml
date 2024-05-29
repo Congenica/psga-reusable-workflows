@@ -15,7 +15,7 @@ on:
       security-group-id:
         required: true
         type: string
-      iam-role-name: 
+      iam-role-name:
         required: true
         type: string
       env_type:
@@ -27,9 +27,9 @@ on:
       github-token:
         required: true
     outputs:
-      label: 
+      label:
         value: ${{ jobs.start-runner.outputs.label }}
-      ec2-instance-id: 
+      ec2-instance-id:
         value: ${{ jobs.start-runner.outputs.ec2-instance-id }}
 
 jobs:
@@ -46,12 +46,12 @@ jobs:
           role-to-assume: ${{ secrets.role-to-assume }}
           role-session-name: gh-ephemeral-runner-role-session
           mask-aws-account-id: false
-      
+
       - name: Get latest runner AMI ID
         run: |
           GH_RUNNER_AMI_ID=$(aws ec2 describe-images \
             --owners self \
-            --filters "Name=name,Values=psga*" \
+            --filters "Name=name,Values=psga*" "Name=state,Values=available" \
             --query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
             --output 'text' | cat)
           echo "GH_RUNNER_AMI_ID=${GH_RUNNER_AMI_ID}" >> $GITHUB_ENV
@@ -69,7 +69,7 @@ jobs:
           subnet-id: ${{ inputs.subnet-id }}
           security-group-id: ${{ inputs.security-group-id }}
           iam-role-name: ${{ inputs.iam-role-name }}
-          aws-resource-tags: > 
+          aws-resource-tags: >
             [
               {"Key": "Name", "Value": "${{ inputs.env_type }}-gh-ephemeral-runner"},
               {"Key": "Project", "Value": "${{ github.repository }}"},
