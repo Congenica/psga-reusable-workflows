@@ -80,4 +80,41 @@ stop-runner:
 
 ---
 
-## Other Resusable Workflow
+## Reference Data Sync
+
+This workflow syncs reference data which is described using a reference-data-description.yml file with a static data bucket. See [Refence Data Overview](https://congenica.atlassian.net/wiki/spaces/PSG/pages/3055115/Reference+Data+Overview) for an overview of the design. This element handles copying the data which has been labelled with a release branch to the S3 static data bucket
+
+- [reference-data-sync.yaml](.github/workflows/reference-data-sync.yaml) 
+
+### Usage
+
+The Congenica organisation should have all necessary tokens etc necessary to run the workflows. The workflow does use the empheral 
+runners system so needs the access that those workflows.
+
+The runners will need access to DVC buckets and the static data bucket. Normally the DVC bucket is the issue as new ones can be added for storing reference data.
+
+### Calling Reference Data Sync Workflow
+
+```yaml
+name: Sync to non-prod S3
+on:
+  push:
+    branches:
+      - 'prerelease/*'
+      - 'release/*'
+
+jobs:
+  sync_to_s3_non_prod:
+    name: Sync to S3 (non-prod)
+    uses: Congenica/psga-reusable-workflows/.github/workflows/reference-data-sync.yaml@main
+    secrets:
+      CICD_OIDC_ROLE: ${{ secrets.CICD_OIDC_ROLE }}
+      GH_PSGA_SYSTEM_PAT: ${{ secrets.GH_PSGA_SYSTEM_PAT }}
+      PYPI_USERNAME: ${{ secrets.ARTIFACTORY_DEV_USERNAME }}
+      PYPI_PASSWORD: ${{ secrets.ARTIFACTORY_DEV_TOKEN }}
+    with:
+      destination-bucket: "psga-nonprod-static-data"
+      env_type: nonprod
+```
+
+---
