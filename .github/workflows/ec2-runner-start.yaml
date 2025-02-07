@@ -21,9 +21,6 @@ on:
       env_type:
         required: true
         type: string
-      market-type:
-        required: false
-        type: string
     secrets:
       role-to-assume:
         required: true
@@ -71,7 +68,7 @@ jobs:
           ec2-instance-type: ${{ inputs.ec2-instance-type }}
           subnet-id: ${{ inputs.subnet-id }}
           security-group-id: ${{ inputs.security-group-id }}
-          market-type: ${{ inputs.market-type }}
+          market-type: spot
           iam-role-name: ${{ inputs.iam-role-name }}
           aws-resource-tags: >
             [
