@@ -21,6 +21,9 @@ on:
       env_type:
         required: true
         type: string
+      market-type:
+        required: false
+        type: string
     secrets:
       role-to-assume:
         required: true
@@ -60,7 +63,7 @@ jobs:
 
       - name: Start EC2 runner
         id: start-ec2-runner
-        uses: machulav/ec2-github-runner@v2
+        uses: machulav/ec2-github-runner@v2.3.8
         with:
           mode: start
           github-token: ${{ secrets.github-token }}
@@ -68,6 +71,7 @@ jobs:
           ec2-instance-type: ${{ inputs.ec2-instance-type }}
           subnet-id: ${{ inputs.subnet-id }}
           security-group-id: ${{ inputs.security-group-id }}
+          market-type: ${{ inputs.market-type }}
           iam-role-name: ${{ inputs.iam-role-name }}
           aws-resource-tags: >
             [
