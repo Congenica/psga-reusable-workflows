@@ -51,7 +51,7 @@ jobs:
         run: |
           GH_RUNNER_AMI_ID=$(aws ec2 describe-images \
             --owners self \
-            --filters "Name=name,Values=psga*" "Name=state,Values=available" \
+            --filters "Name=name,Values=arm64-psga*" "Name=state,Values=available" \
             --query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
             --output 'text' | cat)
           echo "GH_RUNNER_AMI_ID=${GH_RUNNER_AMI_ID}" >> $GITHUB_ENV
