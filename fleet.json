@@ -1,0 +1,31 @@
+  {
+    "LaunchTemplateConfigs": [
+    {
+        "LaunchTemplateSpecification": {
+        "LaunchTemplateId": "lt-052396bfbe3244c59",
+        "Version": "$Latest"
+        },
+        "Overrides": [
+                {
+                    "SubnetId": "subnet-027b983fd1e480593,subnet-0ecea06d86ddf6fb6",
+                    "InstanceRequirements": {
+                        "ExcludedInstanceTypes": [],
+                        "AllowedInstanceTypes": ["c5.large", "c5a.large", "c6i.large", "c6a.large", "c7i.large"],
+                        "VCpuCount": {
+                            "Min": 2,
+                            "Max": 4
+                        },
+                        "MemoryMiB": {
+                            "Min": 3072,
+                            "Max": 8192
+                        }
+                    }
+                }
+            ]
+    }
+    ],
+    "TargetCapacitySpecification": {
+    "TotalTargetCapacity": 1,
+    "DefaultTargetCapacityType": "spot"
+    }
+  }
