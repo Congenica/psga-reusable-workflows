@@ -1,4 +1,4 @@
-# Start runners using EC@ fleet requests
+# Start runners using EC2 fleet requests
 
 The idea is to replace 
 - [ec2-runner-start.yaml](.github/workflows/ec2-runner-start.yaml)
